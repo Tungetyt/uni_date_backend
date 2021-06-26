@@ -76,7 +76,6 @@ createConnection(ormConfig as any).then(async (connection) => {
   });
     app.use(express.static(path.join(__dirname, 'client/build')));
     app.get('*', (req, res) => {
-      console.log('NODE_ENV5',NODE_ENV)  
       res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
 }).catch((error) => console.log('TypeORM connection error: ', error));
