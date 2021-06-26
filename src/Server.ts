@@ -57,7 +57,7 @@ let ormConfig = {
     migrationsDir: `${mainDirName}/migration`,
     subscribersDir: `${mainDirName}/subscriber`,
   },
-  ssl: NODE_ENV === 'production' ? true : false,
+  ssl: NODE_ENV === 'production',
   extra: NODE_ENV === 'production' ? {
     ssl: {
       rejectUnauthorized: false,
@@ -65,17 +65,7 @@ let ormConfig = {
   } : {}
 };
 
-// if(NODE_ENV === 'production'){
-//   ormConfig = {
-//     ...ormConfig,
-    
-//   }
-// }
-console.log('NODE_ENV2',NODE_ENV)
-
 createConnection(ormConfig as any).then(async (connection) => {
-  console.log('NODE_ENV3',NODE_ENV)
-
   app.use('/api', BaseRouter);
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -84,14 +74,11 @@ createConnection(ormConfig as any).then(async (connection) => {
       error: err.message,
     });
   });
-  console.log('NODE_ENV4',NODE_ENV)  
-  // if (NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
     app.get('*', (req, res) => {
       console.log('NODE_ENV5',NODE_ENV)  
       res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
     });
-  // }
 }).catch((error) => console.log('TypeORM connection error: ', error));
 
 export default app;
